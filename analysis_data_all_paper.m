@@ -17,7 +17,7 @@ allConf = []; %store all values of confidence for both conditions
 allUncertain = []; %store all values of uncertainity for both conditions
 allCur = []; %store curiosity ratings from phase 1 here for both conditions
 
-for cond = 1:2 %conditions 1-2
+for cond = 1:2 %conditions 1-2 (if you want to *plot* results from Phase 1, then you don't need the for loop and you will have to call the conditions individually as the plotting file only plots the condition separately)
     trivia_responseAll = []; %response for all subjects within a condition
     numThrown = 0;
     numSub = 0; %total number of subjects for each condition
