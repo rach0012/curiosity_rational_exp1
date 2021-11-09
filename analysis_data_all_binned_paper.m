@@ -1,6 +1,5 @@
-%% analysis of Exp 1 at individual level-- by doing binned histogram of the data and comparing difference across conditions for phase 2 -- complementary to main analysis
+%% analysis of Exp 1 at individual level-- by doing binned histogram of the data and comparing difference across conditions for phase 2 -- complementary to main analysis (appeared in the Appendix in the final paper)
 clear all; 
-addpath(genpath('C:\Users\RACH0_000\Google Drive\researchProjects\curiosity-rational\experiment_data\exp1_new'))
 data = loadjson('curiosity3.json'); %read data in a big cell here
 
 %the below code builds up three matrixes for each condition -- bin_low, bin_medium and bin_high matrix s.t each item

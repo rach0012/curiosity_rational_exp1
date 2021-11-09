@@ -1,5 +1,5 @@
 %% analysis of Exp 1-- comes in the main paper i.e. shows the existence of 
-% u-curve for both phases and non-existence for condition 2, subsequent regression analysis similar to Kang et. al. also part of this code
+% u-curve for both phases and non-existence for condition 2 (in Phase 2), subsequent regression analysis similar to Kang et. al. also part of this code
 
 clear all; 
 data = loadjson('curiosity3.json'); %read data in a big cell here
@@ -99,30 +99,20 @@ for cond = 1:2 %conditions 1-2
     allReveal = [allReveal; reveal];
     allConf = [allConf; confidence];
     allUncertain = [allUncertain; uncertainity];
-    allCur = [allCur; curiosity]; %uncomment if not running plotData1
+    allCur = [allCur; curiosity];
 end
 
-%% statistical significance test with Prob Reveal
+%% statistical significance test for Phase 2 (Follows the template of Kang et al (2009))
 
 conf = [confs; confs];
 uncertain = [uncertains; uncertains];
-mdl3 = fitlm([confs uncertains],probReveal(1,:)'); %this is the regression reported in paper
+mdl3 = fitlm([confs uncertains],probReveal(1,:)'); %Phase 2, condition 1 regression result
 mdl3
-mdl4 = fitlm([confs uncertains],probReveal(2,:)'); %this is the regression reported in paper
+mdl4 = fitlm([confs uncertains],probReveal(2,:)'); %Phase 2, condition 2 regression result
 mdl4
 
-%% statistical significance test with normalized Curiosity for phase 1 - we want to show they are both u-shape and same 
-numCond1 = length(allConf)-length(uncertainity);
-numCond2 = length(uncertainity);
-cat = logical([zeros(1,numCond1) ones(1,numCond2)])';
-varNames = {'confidence', 'uncertainity', 'dummy', 'response'};
-regData = table(allConf, allUncertain, cat, allCur, 'VariableNames', varNames);
-mdl = stepwiselm(regData,'interactions','ResponseVar','response','PredictorVars',{'confidence', 'uncertainity', 'dummy'},'CategoricalVar',{'dummy'});
-mdl2 = fitlm(allConf(1:numCond1,:),allCur(1:numCond1,:)); %check confidence and curiosity for cond 1
-mdl3 = fitlm(allUncertain(1:numCond1,:),allCur(1:numCond1,:));
-mdl4 = fitlm(allConf(numCond1+1:end,:),allCur(numCond1+1:end,:)); %check confidence and curiosity for cond 2
-mdl5 = fitlm(allUncertain(numCond1+1:end,:),allCur(numCond1+1:end,:));
-mdl6 = fitlm(regData);
-
-mdl7 = fitlm([allConf(1:numCond1,:) allUncertain(1:numCond1,:)],allCur(1:numCond1,:));
-mdl8 = fitlm([allConf(numCond1+1:end,:) allUncertain(numCond1+1:end,:)],allCur(numCond1+1:end,:));
+%% statistical significance test with normalized Curiosity for phase 1 - we want to test if they are both u-shape and same 
+mdl1 = fitlm([allConf(1:numCond1,:) allUncertain(1:numCond1,:)],allCur(1:numCond1,:));
+mdl1 %Phase 1, condition 1 regression result
+mdl2 = fitlm([allConf(numCond1+1:end,:) allUncertain(numCond1+1:end,:)],allCur(numCond1+1:end,:));
+mdl2 %Phase 1, condition 2 regression result
